@@ -4,22 +4,28 @@ import { useState } from 'react';
 
 export default function Contato() {
     const [form, setForm] = useState({
-        nome: '',
+        name: '',
         email: '',
-        empresa: '',
-        faturamento: '',
-        mensagem: ''
+        company: '',
+        revenue: '',
+        message: ''
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Form data:', form);
-        alert('Mensagem enviada com sucesso! (simulado)');
-        setForm({ nome: '', email: '', empresa: '', faturamento: '', mensagem: '' });
+        await fetch('/api/submit-form', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(form),
+        }).then(response => response.json()).catch(error => {
+            console.error('Erro ao enviar formulário:', error);
+        }).finally(() => {
+            setForm({ name: '', email: '', company: '', revenue: '', message: '' });
+        });
     };
 
     return (
@@ -33,8 +39,8 @@ export default function Contato() {
                         <label className="mb-1 font-medium">Nome</label>
                         <input
                             type="text"
-                            name="nome"
-                            value={form.nome}
+                            name="name"
+                            value={form.name}
                             onChange={handleChange}
                             required
                             className="border px-4 py-2 rounded-md"
@@ -57,8 +63,8 @@ export default function Contato() {
                         <label className="mb-1 font-medium">Empresa</label>
                         <input
                             type="text"
-                            name="empresa"
-                            value={form.empresa}
+                            name="company"
+                            value={form.company}
                             onChange={handleChange}
                             required
                             className="border px-4 py-2 rounded-md"
@@ -68,8 +74,8 @@ export default function Contato() {
                     <div className="flex flex-col">
                         <label className="mb-1 font-medium">Faturamento mensal</label>
                         <select
-                            name="faturamento"
-                            value={form.faturamento}
+                            name="revenue"
+                            value={form.revenue}
                             onChange={handleChange}
                             required
                             className="border px-4 py-2 rounded-md"
@@ -84,8 +90,8 @@ export default function Contato() {
                     <div className="flex flex-col">
                         <label className="mb-1 font-medium">Mensagem</label>
                         <textarea
-                            name="mensagem"
-                            value={form.mensagem}
+                            name="message"
+                            value={form.message}
                             onChange={handleChange}
                             rows={4}
                             required
