@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
@@ -49,8 +49,12 @@ export default function Contato() {
             } else {
                 throw new Error(data.message || 'Erro desconhecido');
             }
-        } catch (error: any) {
-            toast.error("Erro ao enviar", error.message || "Tente novamente mais tarde.");
+        } catch (error: unknown) {
+            toast.error("Erro ao enviar", error instanceof Error ? {
+                description: error.message
+            } : {
+                description: <p className="text-sm text-neutral-500">Tente novamente mais tarde.</p>
+            });
         }
     };
 
