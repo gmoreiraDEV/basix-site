@@ -10,7 +10,7 @@ const perfil = [
 
 export default function IdealPerfil() {
     return (
-        <section id="perfil" className="bg-white text-black py-20 px-4">
+        <section id="perfil" className="bg-neutral-100 text-neutral-900 py-20 px-4">
             <div className="max-w-4xl mx-auto text-center">
                 <h2 className="text-3xl md:text-4xl font-bold mb-10">
                     É pra sua empresa se...
@@ -18,8 +18,8 @@ export default function IdealPerfil() {
                 <ul className="space-y-6 text-left max-w-2xl mx-auto">
                     {perfil.map((item, index) => (
                         <li key={index} className="flex items-start gap-3">
-                            <Check className="text-black mt-1" size={20} />
-                            <span className="text-lg text-gray-800">{item}</span>
+                            <Check className="text-neutral-900 mt-1" size={20} />
+                            <span className="text-lg text-neutral-800">{item}</span>
                         </li>
                     ))}
                 </ul>

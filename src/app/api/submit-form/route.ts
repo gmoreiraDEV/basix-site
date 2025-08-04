@@ -1,3 +1,4 @@
+// app/api/submit-form/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
@@ -10,24 +11,42 @@ export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
 
-        const { nome, email, empresa, faturamento, mensagem } = body;
+        const { name, email, company, revenue, message } = body;
+
+        const { data: existing, error: checkError } = await supabase
+            .from('leads')
+            .select('id')
+            .eq('email', email)
+            .maybeSingle();
+
+        if (checkError) {
+            console.error('Erro ao verificar duplicado:', checkError);
+            return NextResponse.json({ status: 'error', message: 'Erro ao validar e-mail' }, { status: 500 });
+        }
+
+        if (existing) {
+            return NextResponse.json({
+                status: 'duplicate',
+                message: 'Este e-mail já foi registrado. Obrigado pelo interesse!'
+            }, { status: 400 });
+        }
 
         const { error } = await supabase.from('leads').insert({
-            nome,
+            name,
             email,
-            empresa,
-            faturamento,
-            mensagem
+            company,
+            revenue,
+            message,
         });
 
         if (error) {
-            console.error('Erro ao inserir lead:', error);
+            console.error('[❌] Erro ao salvar lead no Supabase:', error);
             return NextResponse.json({ status: 'error', message: error.message }, { status: 500 });
         }
 
         return NextResponse.json({ status: 'success' });
     } catch (err) {
-        console.error('Erro interno:', err);
-        return NextResponse.json({ status: 'error' }, { status: 500 });
+        console.error('[🔥] Erro interno na API:', err);
+        return NextResponse.json({ status: 'error', message: String(err) }, { status: 500 });
     }
 }
