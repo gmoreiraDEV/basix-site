@@ -2,8 +2,9 @@ import Header from "./components/header";
 import Hero from "./components/hero";
 import About from "./components/about";
 import Solutions from "./components/solutions";
-import IdealPerfil from "./components/idealPerfil";
+import FirstCustomer from "./components/first-customer";
 import Contact from "./components/contact";
+import CTA from "./components/cta";
 import Footer from "./components/footer";
 
 export default function Home() {
@@ -13,7 +14,8 @@ export default function Home() {
       <Hero />
       <About />
       <Solutions />
-      <IdealPerfil />
+      <FirstCustomer />
+      <CTA />
       <Contact />
       <Footer />
     </main>

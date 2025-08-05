@@ -3,7 +3,7 @@ import BasixLogoFull from './basix-logo-full';
 
 export default function Header() {
     return (
-        <header className="w-full bg-neutral-100 shadow-md sticky top-0 z-50">
+        <header className="w-full bg-transparent shadow-md sticky top-0 z-50">
             <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
                 <Link href="/" className="text-xl font-bold text-neutral-900">
                     <BasixLogoFull />
