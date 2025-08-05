@@ -11,7 +11,8 @@ export default function Header() {
                 <nav className="hidden md:flex space-x-6 text-sm font-medium text-neutral-800">
                     <a href="#sobre" className="hover:text-neutral-900">Sobre</a>
                     <a href="#solucoes" className="hover:text-neutral-900">Soluções</a>
-                    <a href="#perfil" className="hover:text-neutral-900">Perfil Ideal</a>
+                    <a href="#perfil" className="hover:text-neutral-900">Nossos desafios</a>
+                    <Link href="/insider" className="hover:text-neutral-900">Insider</Link>
                     <a href="#contato" className="hover:text-neutral-900">Contato</a>
                 </nav>
             </div>

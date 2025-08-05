@@ -12,6 +12,8 @@ export default function Footer() {
                 <p className="text-neutral-400">&copy; {new Date().getFullYear()} Todos os direitos reservados.</p>
 
                 <div className="flex space-x-4">
+                    <Link href="/insider" className="hover:text-neutral-100">Insider</Link>
+                    <a href="#contato" className="hover:text-neutral-100">Contato</a>
                     <a href="https://www.instagram.com/basix.digital/" className="hover:text-neutral-100">Instagram</a>
                 </div>
             </div>

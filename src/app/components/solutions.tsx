@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from '@/components/ui/button';
 import { CheckCircle } from 'lucide-react';
 
@@ -31,7 +32,9 @@ export default function Solutions() {
                                 <p className="text-lg text-neutral-800">{solucao.nome}</p>
                             </div>
                             <p className="text-lg text-neutral-800">{solucao.incluido}</p>
-                            <Button variant="outline" className="ml-4">{solucao.cta}</Button>
+                            <Button asChild variant="outline" className="ml-4">
+                                <Link href="#contato">{solucao.cta}</Link>
+                            </Button>
                         </div>
                     ))}
                 </div>
