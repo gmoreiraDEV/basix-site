@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export default function Hero() {
@@ -11,14 +12,11 @@ export default function Hero() {
                 <p className="mt-6 text-lg md:text-xl text-neutral-300 max-w-3xl mx-auto">
                     Na Basix, vendemos apenas o que usamos todos os dias. Soluções automatizadas para agências e especialistas que querem escalar com inteligência — sem código, sem complicação.                </p>
                 <div className="mt-10 flex justify-center items-center gap-4 flex-row">
-                    <a
-                        href="#contato"
-                        className="inline-block bg-neutral-100 text-neutral-900 px-6 py-3 rounded-full text-sm font-semibold hover:bg-neutral-100 transition"
-                    >
-                        Quero ver a solução funcionando
-                    </a>
-                    <Button variant="outline" className="ml-4 rounded-full">
-                        Ver pacotes
+                    <Button asChild className="rounded-full">
+                        <Link href="#contato">Quero ver a solução funcionando</Link>
+                    </Button>
+                    <Button asChild variant="outline" className="ml-4 rounded-full">
+                        <Link href="/insider">Entrar para o Insider</Link>
                     </Button>
                 </div>
             </div>
