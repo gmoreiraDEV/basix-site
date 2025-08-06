@@ -10,8 +10,10 @@ import Footer from "./components/footer";
 export default function Home() {
   return (
     <main>
-      <Header />
-      <Hero />
+      <div className="flex flex-col bg-neutral-900 gap-0 justify-center items-center">
+        <Header />
+        <Hero />
+      </div>
       <About />
       <Solutions />
       <FirstCustomer />
