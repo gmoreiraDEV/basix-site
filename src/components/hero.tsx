@@ -10,7 +10,9 @@ export default function Hero() {
           A estrutura que usamos para crescer, pronta para funcionar no seu
           negócio
         </h1>
-        <TextEffectFlipper />
+        <TextEffectFlipper
+          flipWords={["Basix", "Funciona", "Basix", "É simples", "Basix"]}
+        />
         <p className="mt-6 text-lg md:text-xl text-neutral-300 max-w-3xl mx-auto">
           Na Basix, vendemos apenas o que usamos todos os dias. Soluções
           automatizadas para agências e especialistas que querem escalar com
