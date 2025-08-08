@@ -8,7 +8,7 @@ export function FixedLogoDesktop() {
       className="hidden md:flex fixed top-6 left-6 z-40 items-center"
       aria-label="Basix Digital"
     >
-      <BasixLogoFull className="!h-16 w-auto text-black dark:text-white" />
+      <BasixLogoFull className="!h-16 w-auto text-neutral-100 dark:text-white" />
     </Link>
   );
 }
