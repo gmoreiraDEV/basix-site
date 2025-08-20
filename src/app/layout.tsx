@@ -1,28 +1,37 @@
-import { Metadata } from "next";
-import { Toaster } from "@/components/ui/sonner";
+import type React from "react"
+import type { Metadata } from "next"
+import { Geist, Geist_Mono } from "next/font/google"
+import "./globals.css"
 
-import "./globals.css";
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist",
+})
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+})
 
 export const metadata: Metadata = {
-  title: "Basix Digital",
+  title: "Basix Digital - IA sem complicação para profissionais e empresas",
   description:
-    "Criamos e otimizamos soluções digitais essenciais — automações, processos e ferramentas — para negócios que precisam de agilidade, escala e resultado.",
-  icons: {
-    icon: "/assets/img/bx.png",
-  },
-};
+    "Consultoria e Mentoria em Inteligência Artificial para PMEs e profissionais. Automatize processos, aumente vendas e ganhe produtividade com IA sem complicação.",
+}
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: Readonly<{
+  children: React.ReactNode
+}>) {
   return (
     <html lang="pt-BR">
-      <body className="w-[100vw] h-[100vh]">
+      <head>
+        <link rel="icon" type="image/png" href="/assets/img/bx.png" />
+      </head>
+      <body className={`${geist.className} ${geistMono.className}`}>
         {children}
-        <Toaster position="top-center" richColors />
       </body>
     </html>
-  );
+  )
 }

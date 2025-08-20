@@ -3,19 +3,13 @@ import XLogo from './x-logo';
 
 export default function Footer() {
     return (
-        <footer className="bg-neutral-900 text-neutral-100 py-8 px-4">
-            <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
+        <footer className="py-8 px-4 border-t border-[#F244C4]/20">
+            <div className="container mx-auto text-center text-white flex flex-col items-center gap-4">
                 <Link href="/" className="text-lg font-bold tracking-tight">
                     <XLogo />
                 </Link>
-
-                <p className="text-neutral-400">&copy; {new Date().getFullYear()} Todos os direitos reservados.</p>
-
-                <div className="flex space-x-4">
-                    <Link href="/insider" className="hover:text-neutral-100">Insider</Link>
-                    <a href="#contato" className="hover:text-neutral-100">Contato</a>
-                    <a href="https://www.instagram.com/basix.digital/" className="hover:text-neutral-100">Instagram</a>
-                </div>
+                <a href="https://www.instagram.com/basix.digital/" className="hover:text-neutral-100">Instagram</a>
+                <p className="text-gray-400">© {new Date().getFullYear()} Basix Digital. Consultoria e Mentoria em Inteligência Artificial.</p>
             </div>
         </footer>
     );

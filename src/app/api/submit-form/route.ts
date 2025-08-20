@@ -1,4 +1,3 @@
-// app/api/submit-form/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
@@ -11,7 +10,7 @@ export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
 
-        const { name, email, company, revenue, message } = body;
+        const { name, email, whatsapp, message } = body;
 
         const { data: existing, error: checkError } = await supabase
             .from('leads')
@@ -34,8 +33,7 @@ export async function POST(req: NextRequest) {
         const { error } = await supabase.from('leads').insert({
             name,
             email,
-            company,
-            revenue,
+            whatsapp,
             message,
         });
 

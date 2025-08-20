@@ -1,143 +1,76 @@
 "use client";
-
-import { useEffect, useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import BasixLogoFull from "@/components/basix-logo-full";
-import { FixedLogoDesktop } from "@/components/fixed-logo-desktop";
-
-const SECTIONS = [
-  {
-    id: "s1",
-    leftText: "BASIX é simples",
-    title: "Soluções descomplicadas com IA",
-    body: "Nada de curva de aprendizado infinita. Você foca no negócio, a Basix cuida do resto.",
-    cta: "Quero uma solução simples",
-  },
-  {
-    id: "s2",
-    leftText: "Automação que vende",
-    title: "Gere leads e vendas no piloto automático",
-    body: "Mais leads. Mais vendas. No piloto automático. Conecte IA ao seu funil comercial.",
-    cta: "Quero automatizar minhas vendas",
-  },
-  {
-    id: "s3",
-    leftText: "IA sem fricção",
-    title: "IA integrada sem complicação",
-    body: "IA conectada aos seus processos, sem precisar programar. Natural, invisível e poderosa como deve ser.",
-    cta: "Quero usar IA no meu negócio",
-  },
-  {
-    id: "s4",
-    leftText: "Implementação guiada",
-    title: "Acompanhamento do diagnóstico à ativação",
-    body: "Você não precisa saber como fazer. Só precisa querer o resultado. Nós guiamos o caminho e entregamos junto com você.",
-    cta: "Quero ser guiado pela Basix",
-  },
-];
-
-const STICKY_UNTIL = 4;
+import { useEffect, useRef, useState } from "react";
+import { ArrowRight } from "lucide-react";
+import { Button } from "./ui/button";
+import { motion } from "framer-motion";
 
 export function Hero() {
-  const [active, setActive] = useState(0);
-  const stickyIds = useMemo(
-    () => SECTIONS.slice(0, STICKY_UNTIL).map((s) => s.id),
-    []
-  );
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    const els = stickyIds
-      .map((id) =>
-        document.querySelector<HTMLElement>(`[data-section="${id}"]`)
-      )
-      .filter(Boolean) as HTMLElement[];
+    const video = videoRef.current;
+    if (!video) return;
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting)
-            setActive(Number((e.target as HTMLElement).dataset.index));
-        });
-      },
-      { threshold: 0.35, rootMargin: "0px 0px -30% 0px" }
-    );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, [stickyIds]);
+    const handleTimeUpdate = () => {
+      if (video.currentTime >= 9.8) {
+        setIsVisible(false);
+        setTimeout(() => {
+          video.currentTime = 0.01;
+          video.play();
+          setIsVisible(true);
+        }, 400);
+      }
+    };
+
+    video.addEventListener("timeupdate", handleTimeUpdate);
+    return () => video.removeEventListener("timeupdate", handleTimeUpdate);
+  }, []);
+
   return (
-    <>
-      <FixedLogoDesktop />
-      <div className="sticky top-0 z-20 block md:hidden border-b bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-        <div className="mx-auto max-w-12xl px-4 py-3 flex items-center gap-3 text-white">
-          <BasixLogoFull
-            aria-label="Basix Digital"
-            className="h-12 w-auto text-neutral-900"
-          />
-          <div className="ml-auto">
-            <AnimatePresence mode="wait">
-              <motion.span
-                key={active}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.22 }}
-                className="text-lg font-semibold tracking-tight"
+    <section className="relative pt-32 pb-20 px-4 overflow-hidden">
+      <motion.video
+        ref={videoRef}
+        autoPlay
+        muted
+        playsInline
+        className="absolute inset-0 left-[20%] w-full h-full object-cover animate-slide-up"
+        animate={{ opacity: isVisible ? 1 : 0 }}
+        transition={{ duration: 0.4, ease: "easeInOut" }}
+      >
+        <source src="/assets/video-loop.webm" type="video/webm" />
+      </motion.video>
+      <div className="absolute inset-0 bg-gradient-to-br from-[#020540]/80 via-[#060126]/70 to-[#150259]/80 opacity-80 z-0"></div>
+      <div className="absolute inset-0 overflow-hidden z-10">
+        <div className="absolute top-20 left-10 w-20 h-20 bg-[#F244C4]/10 rounded-full animate-float"></div>
+        <div className="absolute top-40 right-20 w-32 h-32 bg-[#EF1BF2]/10 rounded-full animate-float-delayed"></div>
+        <div className="absolute bottom-20 left-1/4 w-16 h-16 bg-[#F244C4]/10 rounded-full animate-float-slow"></div>
+      </div>
+
+      <div className="container mx-auto text-center max-w-6xl relative z-20">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="text-left max-w-[320px] md:max-w-none">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+              IA sem complicação para{" "}
+              <span className="text-[#F244C4]">profissionais e empresas</span>
+            </h1>
+            <p className="text-xl text-gray-300 mb-8 leading-relaxed animate-slide-up-delayed">
+              Transforme sua rotina com IA. Mais clientes, mais produtividade,
+              menos complicação — feito sob medida para profissionais e pequenas
+              empresas.
+            </p>
+            <a href="#go-to-ai">
+              <Button
+                size="lg"
+                className="w-auto md:w-full break-words bg-[#F244C4] hover:bg-[#EF1BF2] text-white font-semibold px-6 py-3 rounded-full text-base sm:text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#F244C4]/25"
               >
-                {SECTIONS[active]?.leftText ?? "BASIX"}
-              </motion.span>
-            </AnimatePresence>
+                Quero aplicar IA no meu negócio
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </a>
           </div>
         </div>
       </div>
-
-      <section className="relative ">
-        <div className="mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div
-            className="hidden md:block md:relative bg-neutral-900 text-white"
-            style={{ minHeight: `calc(${STICKY_UNTIL} * 100svh)` }}
-          >
-            <div className="md:sticky md:top-0 h-[100svh] flex items-center justify-end md:pr-8">
-              <div className="flex flex-col items-end gap-6">
-                <AnimatePresence mode="wait">
-                  <motion.h1
-                    key={active}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -12 }}
-                    transition={{ duration: 0.35 }}
-                    className="font-extrabold text-5xl lg:text-7xl text-right tracking-tight"
-                  >
-                    {SECTIONS[active]?.leftText ?? "BASIX"}
-                  </motion.h1>
-                </AnimatePresence>
-              </div>
-            </div>
-          </div>
-
-          <div className="snap-y snap-mandatory">
-            {SECTIONS.slice(0, STICKY_UNTIL).map((s, i) => (
-              <section
-                key={s.id}
-                data-section={s.id}
-                data-index={i}
-                className="min-h-[100svh] snap-start flex items-center border-b"
-              >
-                <div className="py-20 pr-4">
-                  <h2 className="font-extrabold text-4xl md:text-5xl lg:text-6xl">
-                    {s.title}
-                  </h2>
-                  {s.body && (
-                    <p className="mt-4 max-w-prose text-base md:text-lg opacity-80">
-                      {s.body}
-                    </p>
-                  )}
-                  <button className="btn-primary">{s.cta}</button>
-                </div>
-              </section>
-            ))}
-          </div>
-        </div>
-      </section>
-    </>
+    </section>
   );
 }

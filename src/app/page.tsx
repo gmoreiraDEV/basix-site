@@ -1,15 +1,23 @@
-import { Hero } from "@/components/hero";
-import { FAQSection } from "@/components/faq-section";
-import { InterestForm } from "@/components/interest-form";
-import { PricingSection } from "@/components/pricing-section";
+import Footer from "@/components/footer"
+import Header from "@/components/header"
+import { Hero } from "@/components/hero"
+import { Solutions } from "@/components/solutions"
+import { WhyChooseUs } from "@/components/why-choose-us"
+import { HowItWorks } from "@/components/how-it-works"
+import { LeadCapture } from "@/components/lead-capture"
+import { CTAContent } from "@/components/cta-content"
 
-export default function Page() {
+export default function BasixDigitalLanding() {
   return (
-    <main className="min-h-[100svh] w-full">
+    <div className="min-h-screen bg-gradient-to-br from-[#020540] via-[#060126] to-[#150259]">
+      <Header />
       <Hero />
-      <PricingSection />
-      <InterestForm />
-      <FAQSection />
-    </main>
-  );
+      <Solutions />
+      <WhyChooseUs />
+      <HowItWorks />
+      <LeadCapture />
+      <CTAContent />
+      <Footer />
+    </div>
+  )
 }
