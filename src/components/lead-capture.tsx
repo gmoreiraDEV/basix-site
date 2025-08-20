@@ -10,13 +10,13 @@ import { Label } from "./ui/label";
 import { toast } from "sonner";
 
 export function LeadCapture() {
-    const { register, handleSubmit, reset } = useForm();
-    const onSubmit = (data: any) => {
+    const { register, handleSubmit, reset } = useForm<{ name: string, email: string, whatsapp: string, challenge: string }>();
+    const onSubmit = ({ name, email, whatsapp, challenge }: { name: string, email: string, whatsapp: string, challenge: string }) => {
         const dataToSend = {
-            name: data.name,
-            email: data.email,
-            message: data.challenge,
-            whatsapp: data.whatsapp,
+            name: name,
+            email: email,
+            message: challenge,
+            whatsapp: whatsapp,
         };
         console.log(dataToSend);
         fetch("/api/submit-form", {
