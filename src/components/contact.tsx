@@ -38,17 +38,22 @@ export default function Contato() {
                 body: JSON.stringify(data),
             });
 
-            if (response.ok) {
-                toast.promise(response.json(), {
-                    loading: "Enviando...",
-                    success: "Formulário enviado com sucesso!",
+            const result = await response.json();
+
+            if (response.ok && result.status === 'success') {
+                toast.success("Formulário enviado com sucesso!", {
                     description: "Obrigado pelo contato. Em breve retornaremos.",
-                    error: "Erro ao enviar"
                 });
                 form.reset();
-            } else {
-                throw new Error(data.message || 'Erro desconhecido');
+                return;
             }
+
+            if (result.status === 'duplicate') {
+                toast.info(result.message ?? "Este e-mail já foi registrado.");
+                return;
+            }
+
+            throw new Error(result.message || 'Erro desconhecido');
         } catch (error: unknown) {
             toast.error("Erro ao enviar", error instanceof Error ? {
                 description: error.message

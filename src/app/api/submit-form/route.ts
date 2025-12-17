@@ -22,8 +22,7 @@ const basixWhatsappNumber = '+55 11 99135-9596';
 
 async function sendConfirmationEmail(payload: { name: string; email: string }) {
     if (!resend) {
-        console.warn('[ℹ️] Resend API key ausente. O lead não receberá confirmação por e-mail.');
-        return;
+        throw new Error('Resend API key ausente. O lead não receberá confirmação por e-mail.');
     }
 
     const { name, email } = payload;
@@ -42,7 +41,7 @@ async function sendConfirmationEmail(payload: { name: string; email: string }) {
     });
 
     if (error) {
-        console.error('[❌] Erro ao enviar confirmação ao lead:', error);
+        throw new Error(`[❌] Erro ao enviar confirmação ao lead: ${error.message ?? error}`);
     }
 }
 
@@ -55,8 +54,7 @@ async function sendNotificationEmail(payload: {
     message: string;
 }) {
     if (!resend || !notificationRecipient) {
-        console.warn('[ℹ️] Email notifications are not configured.');
-        return;
+        throw new Error('Email notifications are not configured.');
     }
 
     const { name, email, whatsapp, company, revenue, message } = payload;
@@ -78,7 +76,7 @@ async function sendNotificationEmail(payload: {
     });
 
     if (error) {
-        console.error('[❌] Erro ao enviar notificação de e-mail:', error);
+        throw new Error(`[❌] Erro ao enviar notificação de e-mail: ${error.message ?? error}`);
     }
 }
 
@@ -116,12 +114,18 @@ export async function POST(req: NextRequest) {
             client.release();
         }
 
-        await sendNotificationEmail({ name, email, whatsapp, company, revenue, message });
-        await sendConfirmationEmail({ name, email });
+        await Promise.all([
+            sendNotificationEmail({ name, email, whatsapp, company, revenue, message }),
+            sendConfirmationEmail({ name, email })
+        ]);
 
         return NextResponse.json({ status: 'success' });
     } catch (err) {
         console.error('[🔥] Erro interno na API:', err);
-        return NextResponse.json({ status: 'error', message: 'Erro interno no servidor.' }, { status: 500 });
+
+        return NextResponse.json({
+            status: 'error',
+            message: err instanceof Error ? err.message : 'Erro interno no servidor.'
+        }, { status: 500 });
     }
 }
