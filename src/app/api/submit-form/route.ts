@@ -20,6 +20,18 @@ const pool = connectionString
     })
   : null;
 
+function normalizeBRPhone(input: string | undefined): string {
+  if (!input) return "";
+
+  let digits = String(input).replace(/[^\d]/g, "");
+
+  if (!digits.startsWith("55")) {
+    digits = "55" + digits;
+  }
+
+  return digits;
+}
+
 const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
@@ -43,12 +55,12 @@ async function sendConfirmationEmail(payload: { name: string; email: string }) {
     to: email,
     subject: "Recebemos sua mensagem na Basix",
     html: `
-            <h2>Olá, ${name}!</h2>
-            <p>Recebemos o seu formulário e nossa equipe entrará em contato em breve.</p>
-            <p>Se a sua urgência for grande, fale diretamente conosco no WhatsApp: <strong>${basixWhatsappNumber}</strong>.</p>
-            <p><a href="https://wa.me/5511991359596">Iniciar conversa no WhatsApp</a></p>
-            <p>Obrigado pelo interesse em conversar com a Basix!</p>
-        `,
+      <h2>Olá, ${name}!</h2>
+      <p>Recebemos o seu formulário e nossa equipe entrará em contato em breve.</p>
+      <p>Se a sua urgência for grande, fale diretamente conosco no WhatsApp: <strong>${basixWhatsappNumber}</strong>.</p>
+      <p><a href="https://wa.me/5511991359596">Iniciar conversa no WhatsApp</a></p>
+      <p>Obrigado pelo interesse em conversar com a Basix!</p>
+    `,
   });
 
   if (error) {
@@ -81,13 +93,16 @@ async function sendNotificationEmail(payload: {
             <h2>Novo formulário enviado</h2>
             <p><strong>Nome:</strong> ${name}</p>
             <p><strong>E-mail:</strong> ${email}</p>
-            ${whatsapp ? `<p><strong>WhatsApp:</strong> ${whatsapp}</p>` : ""}
+            ${
+              whatsapp
+                ? `<p><strong>WhatsApp:</strong> <a href="https://wa.me/${normalizeBRPhone(
+                    whatsapp
+                  )}">${whatsapp}</a></p>`
+                : ""
+            }
             ${company ? `<p><strong>Empresa:</strong> ${company}</p>` : ""}
             ${revenue ? `<p><strong>Faturamento:</strong> ${revenue}</p>` : ""}
-            ${whatsapp ? `<p><strong>WhatsApp:</strong> ${whatsapp}</p>` : ""}
-            ${company ? `<p><strong>Empresa:</strong> ${company}</p>` : ""}
-            ${revenue ? `<p><strong>Faturamento:</strong> ${revenue}</p>` : ""}
-            <p><strong>Mensagem:</strong></p>
+           <p><strong>Mensagem:</strong></p>
             <p>${message}</p>
         `,
   });
