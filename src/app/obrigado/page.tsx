@@ -1,10 +1,19 @@
+"use client";
+
 import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowRight, CheckCircle2, MessageCircle } from "lucide-react";
+import { useEffect } from "react";
 
 import BasixLogoFull from "@/components/basix-logo-full";
 import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
+
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+  }
+}
 
 export const metadata: Metadata = {
   title: "Obrigado - Basix Digital",
@@ -13,6 +22,15 @@ export const metadata: Metadata = {
 };
 
 export default function ObrigadoPage() {
+  useEffect(() => {
+    if (typeof window !== "undefined" && typeof window.gtag === "function") {
+      window.gtag("event", "ads_conversion_Enviar_formul_rio_de_le_1", {
+        value: 1,
+        currency: "BRL",
+      });
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#020540] via-[#060126] to-[#150259] text-white flex flex-col">
       <header className="fixed top-0 w-full z-50 bg-[#020540]/90 backdrop-blur-sm border-b border-[#F244C4]/20">
