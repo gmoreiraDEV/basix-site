@@ -11,31 +11,46 @@ import { toast } from "sonner";
 
 export function LeadCapture() {
     const { register, handleSubmit, reset } = useForm<{ name: string, email: string, whatsapp: string, challenge: string }>();
+
     const onSubmit = ({ name, email, whatsapp, challenge }: { name: string, email: string, whatsapp: string, challenge: string }) => {
         const dataToSend = {
-            name: name,
-            email: email,
+            name,
+            email,
             message: challenge,
-            whatsapp: whatsapp,
+            whatsapp,
+            source: 'lead-capture'
         };
-        console.log(dataToSend);
+
         fetch("/api/submit-form", {
             method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify(dataToSend),
         }).then(res => res.json()).then(data => {
-            data.status === "success" ? toast.success("Obrigado por se inscrever! Em breve entraremos em contato.") : toast.error("Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.");
+            if (data.status === "success") {
+                toast.success("Obrigado por se inscrever! Em breve entraremos em contato.");
+            } else if (data.status === "duplicate") {
+                toast.info(data.message ?? "Este e-mail já foi registrado.");
+            } else {
+                toast.error("Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.");
+            }
         }).catch(err => {
             console.error(err);
+            toast.error("Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.");
         }).finally(() => {
             reset();
         });
     };
+
     return (
         <section className="py-20 px-4" id="go-to-ai">
             <div className="container mx-auto max-w-2xl">
                 <Card className="bg-white/10 border-[#F244C4]/30 backdrop-blur-sm">
                     <CardHeader className="text-center">
-                        <CardTitle className="text-3xl text-white mb-4">Descubra como a IA pode transformar seu negócio</CardTitle>
+                        <CardTitle className="text-3xl text-white mb-4">
+                            Descubra como a IA pode transformar seu negócio
+                        </CardTitle>
                         <CardDescription className="text-gray-300 text-lg">
                             Deixe seus dados e entraremos em contato com orientações práticas e oportunidades exclusivas.
                         </CardDescription>
@@ -98,5 +113,5 @@ export function LeadCapture() {
                 </Card>
             </div>
         </section>
-    )
+    );
 }
