@@ -107,7 +107,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { name, email, whatsapp, message, company, revenue } = body;
+    const { name, email, whatsapp, message, company, revenue, source } = body;
 
     if (!name || !email || !message) {
       return NextResponse.json(
@@ -139,20 +139,18 @@ export async function POST(req: NextRequest) {
 
       await client.query(
         `INSERT INTO leads (name, email, whatsapp, company, revenue, message, source)
-      await client.query(
-       [
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [
           name,
           email,
           whatsapp ?? null,
           company ?? null,
           revenue ?? null,
           message,
-          source ?? null,
+          source ?? "website",
         ]
-      `
       );
-    } finally {
-      client.release();
+
       await sendConfirmationEmail({ name, email });
 
       await sendNotificationEmail({
@@ -165,6 +163,8 @@ export async function POST(req: NextRequest) {
       });
 
       return NextResponse.json({ status: "success" });
+    } finally {
+      client.release();
     }
   } catch (err) {
     console.error("[🔥] Erro interno na API:", err);
