@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import type { Metadata } from "next";
 import { ArrowRight, CheckCircle2, MessageCircle } from "lucide-react";
 import { useEffect } from "react";
 
@@ -14,12 +13,6 @@ declare global {
     gtag?: (...args: unknown[]) => void;
   }
 }
-
-export const metadata: Metadata = {
-  title: "Obrigado - Basix Digital",
-  description:
-    "Obrigado pelo envio do formulário. Em breve nossa equipe entrará em contato para ajudar você a aplicar IA no seu negócio.",
-};
 
 export default function ObrigadoPage() {
   useEffect(() => {
@@ -35,7 +28,11 @@ export default function ObrigadoPage() {
     <div className="min-h-screen bg-gradient-to-br from-[#020540] via-[#060126] to-[#150259] text-white flex flex-col">
       <header className="fixed top-0 w-full z-50 bg-[#020540]/90 backdrop-blur-sm border-b border-[#F244C4]/20">
         <div className="container mx-auto px-4 py-4 flex flex-col md:flex-row gap-4 md:gap-0 justify-between items-center">
-          <Link href="/" className="text-white" aria-label="Voltar para a página inicial">
+          <Link
+            href="/"
+            className="text-white"
+            aria-label="Voltar para a página inicial"
+          >
             <BasixLogoFull className="w-auto h-10 md:h-16" />
           </Link>
           <Link href="/#go-to-ai">
@@ -57,32 +54,45 @@ export default function ObrigadoPage() {
             </div>
 
             <div className="space-y-4">
-              <p className="text-sm uppercase tracking-[0.2em] text-[#F244C4]">Mensagem enviada</p>
+              <p className="text-sm uppercase tracking-[0.2em] text-[#F244C4]">
+                Mensagem enviada
+              </p>
               <h1 className="text-3xl md:text-4xl font-bold leading-tight">
                 Obrigado por confiar na Basix Digital
               </h1>
               <p className="text-lg text-gray-200 max-w-3xl mx-auto">
-                Recebemos o seu formulário e nossa equipe já está analisando sua mensagem. Em breve entraremos em contato com orientações personalizadas para aplicar IA no seu negócio.
+                Recebemos o seu formulário e nossa equipe já está analisando sua
+                mensagem. Em breve entraremos em contato com orientações
+                personalizadas para aplicar IA no seu negócio.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full text-left">
               <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                <h3 className="text-xl font-semibold mb-2 text-white">O que acontece agora?</h3>
+                <h3 className="text-xl font-semibold mb-2 text-white">
+                  O que acontece agora?
+                </h3>
                 <p className="text-gray-200 text-base">
-                  Responderemos em até 1 dia útil com um plano inicial e próximos passos para a sua demanda.
+                  Responderemos em até 1 dia útil com um plano inicial e
+                  próximos passos para a sua demanda.
                 </p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                <h3 className="text-xl font-semibold mb-2 text-white">Precisa de agilidade?</h3>
+                <h3 className="text-xl font-semibold mb-2 text-white">
+                  Precisa de agilidade?
+                </h3>
                 <p className="text-gray-200 text-base">
-                  Prefere falar agora? Nosso time está disponível para tirar dúvidas rápidas no WhatsApp.
+                  Prefere falar agora? Nosso time está disponível para tirar
+                  dúvidas rápidas no WhatsApp.
                 </p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                <h3 className="text-xl font-semibold mb-2 text-white">Continue explorando</h3>
+                <h3 className="text-xl font-semibold mb-2 text-white">
+                  Continue explorando
+                </h3>
                 <p className="text-gray-200 text-base">
-                  Volte para a página inicial e descubra outras formas de destravar resultados com IA.
+                  Volte para a página inicial e descubra outras formas de
+                  destravar resultados com IA.
                 </p>
               </div>
             </div>
@@ -100,7 +110,10 @@ export default function ObrigadoPage() {
                 rel="noreferrer"
                 className="w-full sm:w-auto"
               >
-                <Button variant="outline" className="w-full sm:w-auto border-[#F244C4]/60 text-white bg-white/5 hover:bg-white/10">
+                <Button
+                  variant="outline"
+                  className="w-full sm:w-auto border-[#F244C4]/60 text-white bg-white/5 hover:bg-white/10"
+                >
                   Falar pelo WhatsApp
                   <MessageCircle className="ml-2 h-5 w-5" />
                 </Button>
