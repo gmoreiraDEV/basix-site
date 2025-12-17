@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 import { Button } from "./ui/button";
@@ -16,6 +17,7 @@ import { Label } from "./ui/label";
 import { toast } from "sonner";
 
 export function LeadCapture() {
+  const router = useRouter();
   const { register, handleSubmit, reset } = useForm<{
     name: string;
     email: string;
@@ -23,7 +25,7 @@ export function LeadCapture() {
     challenge: string;
   }>();
 
-  const onSubmit = ({
+  const onSubmit = async ({
     name,
     email,
     whatsapp,
@@ -42,39 +44,35 @@ export function LeadCapture() {
       source: "lead-capture",
     };
 
-    fetch("/api/submit-form", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataToSend),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status === "success") {
-          toast.success(
-            "Obrigado por se inscrever! Em breve entraremos em contato."
-          );
-        } else if (data.status === "duplicate") {
-          toast.info(
-            data.message ??
-              "Este e-mail já foi registrado. Responderemos em breve."
-          );
-        } else {
-          toast.error(
-            "Ocorreu um erro ao enviar o formulário. Por favor, tente novamente."
-          );
-        }
-      })
-      .catch((err) => {
-        console.error(err);
+    try {
+      const response = await fetch("/api/submit-form", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
+      });
+
+      const data = await response.json();
+
+      if (data.status === "success") {
+        toast.success("Obrigado por se inscrever! Em breve entraremos em contato.");
+        router.push("/obrigado");
+      } else if (data.status === "duplicate") {
+        toast.info(
+          data.message ?? "Este e-mail já foi registrado. Responderemos em breve."
+        );
+      } else {
         toast.error(
           "Ocorreu um erro ao enviar o formulário. Por favor, tente novamente."
         );
-      })
-      .finally(() => {
-        reset();
-      });
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.");
+    } finally {
+      reset();
+    }
   };
 
   return (
