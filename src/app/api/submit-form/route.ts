@@ -107,7 +107,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { name, email, whatsapp, message, company, revenue, source } = body;
+    const { name, email, whatsapp, message, company, revenue } = body;
 
     if (!name || !email || !message) {
       return NextResponse.json(
