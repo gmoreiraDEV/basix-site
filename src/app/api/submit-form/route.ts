@@ -153,6 +153,7 @@ export async function POST(req: NextRequest) {
       );
     } finally {
       client.release();
+      await sendConfirmationEmail({ name, email });
 
       await sendNotificationEmail({
         name,
