@@ -18,6 +18,33 @@ const pool = connectionString
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 const notificationRecipient = process.env.NOTIFY_EMAIL_TO;
 const notificationSender = process.env.NOTIFY_EMAIL_FROM || 'Basix <no-reply@basix.ai>';
+const basixWhatsappNumber = '+55 11 99135-9596';
+
+async function sendConfirmationEmail(payload: { name: string; email: string }) {
+    if (!resend) {
+        console.warn('[ℹ️] Resend API key ausente. O lead não receberá confirmação por e-mail.');
+        return;
+    }
+
+    const { name, email } = payload;
+
+    const { error } = await resend.emails.send({
+        from: notificationSender,
+        to: email,
+        subject: 'Recebemos sua mensagem na Basix',
+        html: `
+            <h2>Olá, ${name}!</h2>
+            <p>Recebemos o seu formulário e nossa equipe entrará em contato em breve.</p>
+            <p>Se a sua urgência for grande, fale diretamente conosco no WhatsApp: <strong>${basixWhatsappNumber}</strong>.</p>
+            <p><a href="https://wa.me/5511991359596">Iniciar conversa no WhatsApp</a></p>
+            <p>Obrigado pelo interesse em conversar com a Basix!</p>
+        `,
+    });
+
+    if (error) {
+        console.error('[❌] Erro ao enviar confirmação ao lead:', error);
+    }
+}
 
 async function sendNotificationEmail(payload: {
     name: string;
@@ -90,6 +117,7 @@ export async function POST(req: NextRequest) {
         }
 
         await sendNotificationEmail({ name, email, whatsapp, company, revenue, message });
+        await sendConfirmationEmail({ name, email });
 
         return NextResponse.json({ status: 'success' });
     } catch (err) {
