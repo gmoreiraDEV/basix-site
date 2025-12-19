@@ -3,25 +3,32 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, MessageCircle } from "lucide-react";
 import { useEffect } from "react";
+import crypto from "crypto";
 
 import BasixLogoFull from "@/components/basix-logo-full";
 import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
 
-declare global {
-  interface Window {
-    gtag?: (...args: unknown[]) => void;
-  }
-}
-
 export default function ObrigadoPage() {
   useEffect(() => {
-    if (typeof window !== "undefined" && typeof window.gtag === "function") {
-      window.gtag("event", "ads_conversion_Enviar_formul_rio_de_le_1", {
-        value: 1,
-        currency: "BRL",
-      });
-    }
+    if (typeof window === "undefined" || typeof window.gtag !== "function")
+      return;
+
+    const key = "basix_lead_conversion_fired";
+    if (sessionStorage.getItem(key) === "1") return;
+    sessionStorage.setItem(key, "1");
+
+    window.gtag("event", "generate_lead", {
+      method: "form",
+      value: 1,
+      currency: "BRL",
+      event_id: crypto.randomUUID?.() ?? String(Date.now()),
+    });
+
+    window.gtag("event", "ads_conversion_Enviar_formul_rio_de_le_1", {
+      value: 1,
+      currency: "BRL",
+    });
   }, []);
 
   return (

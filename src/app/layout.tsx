@@ -1,8 +1,10 @@
 import type React from "react";
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
+import { GoogleAnalytics } from "@next/third-parties/google";
+
+import { PageViewTracker } from "./analytics/pageview";
 
 import "./globals.css";
 
@@ -31,21 +33,11 @@ export default function RootLayout({
     <html lang="pt-BR" suppressHydrationWarning={true} data-lt-installed="true">
       <head>
         <link rel="icon" type="image/png" href="/assets/img/bx.png" />
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-N5LQ4YPZ13"
-          strategy="afterInteractive"
-        />
-        <Script id="gtag-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-N5LQ4YPZ13');
-          `}
-        </Script>
       </head>
       <body className={`${geist.className} ${geistMono.className}`}>
+        <PageViewTracker />
         {children}
+        <GoogleAnalytics gaId="G-N5LQ4YPZ13" />
         <Toaster />
       </body>
     </html>
