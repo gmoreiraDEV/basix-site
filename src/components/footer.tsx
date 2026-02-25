@@ -8,6 +8,15 @@ export default function Footer() {
                 <Link href="/" className="text-lg font-bold tracking-tight">
                     <XLogo />
                 </Link>
+                <div className="flex items-center gap-4 text-sm text-gray-300">
+                    <Link href="/policy" className="hover:text-white transition-colors">
+                        Política de Privacidade
+                    </Link>
+                    <span className="text-[#F244C4]/50">|</span>
+                    <Link href="/terms" className="hover:text-white transition-colors">
+                        Termos de Uso
+                    </Link>
+                </div>
                 <a href="https://www.instagram.com/basix.digital/" className="hover:text-neutral-100">Instagram</a>
                 <p className="text-gray-400">© {new Date().getFullYear()} Basix Digital. Consultoria e Mentoria em Inteligência Artificial.</p>
             </div>
